@@ -1,8 +1,17 @@
-export default function TodoItem({ id, isDone, content, date, onUpdate }) {
+export default function TodoItem({
+  id,
+  isDone,
+  content,
+  date,
+  onUpdate,
+  onDelete,
+}) {
   const onChangeCheckbox = () => {
     onUpdate(id);
   };
-
+  const deleteBtn = () => {
+    onDelete(id);
+  };
   return (
     <div className="TodoItem">
       <input onChange={onChangeCheckbox} checked={isDone} type="checkbox" />
@@ -10,7 +19,7 @@ export default function TodoItem({ id, isDone, content, date, onUpdate }) {
         {isDone ? <p className="checkTodo">{content}</p> : content}
       </div>
       <div className="date">{new Date(date).toLocaleDateString()}</div>
-      <button>식제</button>
+      <button onClick={deleteBtn}>삭제</button>
     </div>
   );
 }

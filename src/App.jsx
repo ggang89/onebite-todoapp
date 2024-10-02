@@ -51,11 +51,16 @@ function App() {
     setTodos(newArr);
   };
 
+  const onDelete = (targetId) => {
+    const newArr = todos.filter((todo) => todo.id !== targetId);
+    setTodos(newArr);
+  };
+
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} />
+      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
     </div>
   );
 }
