@@ -32,11 +32,30 @@ function App() {
     };
     setTodos([newTodo, ...todos]);
   };
+
+  const onUpdate = (targetId) => {
+    //todos State 값 중에
+    //targetId와 일치하는 id를 갖는 투두 아이템의 isDone 변경
+    const newArr = todos.map((todo) => {
+      if (targetId === todo.id) {
+        return {
+          ...todo,
+          isDone: !todo.isDone,
+        };
+      }
+      return todo;
+    });
+    //삼항연산자로 간략히
+    //todos.map((todo)=>todo.id===targetId ?
+    //{...todo, isDone: !todo.isDone }:todo)
+    setTodos(newArr);
+  };
+
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} />
+      <List todos={todos} onUpdate={onUpdate} />
     </div>
   );
 }

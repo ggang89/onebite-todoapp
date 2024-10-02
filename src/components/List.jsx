@@ -1,7 +1,7 @@
 import TodoItem from "./TodoItem";
 import { useState } from "react";
 
-export default function List({ todos }) {
+export default function List({ todos, onUpdate }) {
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
@@ -27,7 +27,7 @@ export default function List({ todos }) {
       />
       <div className="TodosWrapper">
         {filteredTodos.map((todo) => {
-          return <TodoItem key={todo.id} {...todo} />;
+          return <TodoItem key={todo.id} {...todo} onUpdate={onUpdate} />;
         })}
       </div>
     </div>
