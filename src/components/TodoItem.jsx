@@ -1,13 +1,14 @@
 export default function TodoItem({ id, isDone, content, date, onUpdate }) {
-  
   const onChangeCheckbox = () => {
     onUpdate(id);
-  }
-  
+  };
+
   return (
     <div className="TodoItem">
       <input onChange={onChangeCheckbox} checked={isDone} type="checkbox" />
-      <div className="content">{content}</div>
+      <div className="content">
+        {isDone ? <p className="checkTodo">{content}</p> : content}
+      </div>
       <div className="date">{new Date(date).toLocaleDateString()}</div>
       <button>식제</button>
     </div>

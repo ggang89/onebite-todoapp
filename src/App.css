@@ -77,3 +77,8 @@ color: gray;
   border-radius: 5px;
   padding: 5px;
 }
+.checkTodo{
+  text-decoration: line-through ;
+  gap:0;
+  margin: 0;
+}
