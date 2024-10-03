@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
+import Exam from "./components/Exam";
 import "./App.css";
 
 const mockDate = [
@@ -81,7 +82,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      <Exam/>
+      {/* <Header />
       <Editor onCreate={onCreate} />
       <List
         todos={todos}
@@ -89,7 +91,7 @@ function App() {
         onDelete={onDelete}
         onEdit={onEdit}
         handleEditText={handleEditText}
-      />
+      /> */}
     </div>
   );
 }
