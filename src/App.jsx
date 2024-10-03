@@ -8,11 +8,13 @@ const mockDate = [
   {
     id: 0,
     isDone: false,
+    isEditing: false,
     content: "React Study",
     date: new Date().getTime(),
   },
   {
     id: 1,
+    isEditing: false,
     isDone: false,
     content: " Study",
     date: new Date().getTime(),
@@ -27,6 +29,7 @@ function App() {
     const newTodo = {
       id: idRef.current++,
       isDone: false,
+      isEditing: false,
       content: content,
       date: new Date().getTime(),
     };
@@ -55,12 +58,38 @@ function App() {
     const newArr = todos.filter((todo) => todo.id !== targetId);
     setTodos(newArr);
   };
+  const onEdit = (targetId) => {
+    const newArr = todos.map((todo) => {
+      if (todo.id === targetId) {
+        return { ...todo, isEditing: !todo.isEditing };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(newArr);
+  };
+  const handleEditText = (e, targetId) => {
+    const newArr = todos.map((todo) => {
+      if (todo.id === targetId) {
+        return { ...todo, content: e.target.value };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(newArr);
+  };
 
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+      <List
+        todos={todos}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        handleEditText={handleEditText}
+      />
     </div>
   );
 }

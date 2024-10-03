@@ -1,7 +1,13 @@
 import TodoItem from "./TodoItem";
 import { useState } from "react";
 
-export default function List({ todos, onUpdate, onDelete }) {
+export default function List({
+  todos,
+  onUpdate,
+  onDelete,
+  onEdit,
+  handleEditText,
+}) {
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
@@ -33,6 +39,8 @@ export default function List({ todos, onUpdate, onDelete }) {
               {...todo}
               onUpdate={onUpdate}
               onDelete={onDelete}
+              onEdit={onEdit}
+              handleEditText={handleEditText}
             />
           );
         })}
