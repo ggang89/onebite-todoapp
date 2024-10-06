@@ -1,5 +1,5 @@
 import TodoItem from "./TodoItem";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function List({
   todos,
@@ -24,7 +24,7 @@ export default function List({
   };
   const filteredTodos = getFilteredDate();
 
-  const getAnalyzedData = () => {
+  const { totalCount, doneCount, notDoneCount } = useMemo(() => {
     const totalCount = todos.length;
     const doneCount = todos.filter((todo) => todo.isDone).length;
     const notDoneCount = totalCount - doneCount;
@@ -34,8 +34,7 @@ export default function List({
       doneCount,
       notDoneCount,
     };
-  };
-  const { totalCount, doneCount, notDoneCount } = getAnalyzedData();
+  }, [todos]);
 
   return (
     <div className="List">
