@@ -34,7 +34,7 @@ function reducer(state, action) {
     case "EDIT":
       return state.map((item) =>
         item.id === action.targetId
-          ? { ...item, isEditing: !item.isEditing }
+          ? { ...item, isEditing: !item.isEditing } //수정한 콘텐츠 안 보임
           : item
       );
     case "handleEditText":
