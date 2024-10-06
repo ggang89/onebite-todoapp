@@ -1,8 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useReducer } from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
-import Exam from "./components/Exam";
 import "./App.css";
 
 const mockDate = [
@@ -22,68 +21,82 @@ const mockDate = [
   },
 ];
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "CREATE":
+      return [action.data, ...state];
+    case "UPDATE":
+      return state.map((item) =>
+        item.id === action.targetId ? { ...item, isDone: !item.isDone } : item
+      );
+    case "DELETE":
+      return state.filter((item) => item.id !== action.targetId);
+    case "EDIT":
+      return state.map((item) =>
+        item.id === action.targetId
+          ? { ...item, isEditing: !item.isEditing }
+          : item
+      );
+    case "handleEditText":
+      return state.map((item) =>
+        item.id === action.targetId
+          ? { ...item, content: action.content }
+          : item
+      );
+
+    default:
+      return state;
+  }
+}
+
 function App() {
-  const [todos, setTodos] = useState(mockDate);
+  const [todos, dispatch] = useReducer(reducer, mockDate);
   const idRef = useRef(2);
 
   const onCreate = (content) => {
-    const newTodo = {
-      id: idRef.current++,
-      isDone: false,
-      isEditing: false,
-      content: content,
-      date: new Date().getTime(),
-    };
-    setTodos([newTodo, ...todos]);
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current++,
+        isDone: false,
+        content: content,
+        date: new Date().getTime(),
+      },
+    });
   };
 
   const onUpdate = (targetId) => {
-    //todos State 값 중에
-    //targetId와 일치하는 id를 갖는 투두 아이템의 isDone 변경
-    const newArr = todos.map((todo) => {
-      if (targetId === todo.id) {
-        return {
-          ...todo,
-          isDone: !todo.isDone,
-        };
-      }
-      return todo;
+    dispatch({
+      type: "UPDATE",
+      targetId: targetId,
     });
-    //삼항연산자로 간략히
-    //todos.map((todo)=>todo.id===targetId ?
-    //{...todo, isDone: !todo.isDone }:todo)
-    setTodos(newArr);
   };
 
   const onDelete = (targetId) => {
-    const newArr = todos.filter((todo) => todo.id !== targetId);
-    setTodos(newArr);
-  };
-  const onEdit = (targetId) => {
-    const newArr = todos.map((todo) => {
-      if (todo.id === targetId) {
-        return { ...todo, isEditing: !todo.isEditing };
-      } else {
-        return todo;
-      }
+    dispatch({
+      type: "DELETE",
+      targetId: targetId,
     });
-    setTodos(newArr);
+  };
+
+  const onEdit = (targetId) => {
+    dispatch({
+      type: "EDIT",
+      targetId: targetId,
+    });
   };
   const handleEditText = (e, targetId) => {
-    const newArr = todos.map((todo) => {
-      if (todo.id === targetId) {
-        return { ...todo, content: e.target.value };
-      } else {
-        return todo;
-      }
+    dispatch({
+      type: "handleEditText",
+      targetId: targetId,
+      event:e,
     });
-    setTodos(newArr);
   };
 
   return (
     <div className="App">
-      <Exam/>
-      {/* <Header />
+      {/* <Exam/> */}
+      <Header />
       <Editor onCreate={onCreate} />
       <List
         todos={todos}
@@ -91,7 +104,7 @@ function App() {
         onDelete={onDelete}
         onEdit={onEdit}
         handleEditText={handleEditText}
-      /> */}
+      />
     </div>
   );
 }
