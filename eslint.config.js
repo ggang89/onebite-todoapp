@@ -34,7 +34,8 @@ export default [
         { allowConstantExport: true },
       ],
       "no-unused-vars": "off",
-      "react/prop-types":"off",
+      "react/prop-types": "off",
+      "eslint(react-refresh/only-export-components)":"off",
     },
   },
 ]

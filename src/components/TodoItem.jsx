@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { memo } from "react";
 
-export default function TodoItem({
+function TodoItem({
   id,
   isDone,
   isEditing,
@@ -11,8 +11,6 @@ export default function TodoItem({
   onEdit,
   handleEditText,
 }) {
-  //const [input, setInput] = useState(content);
-
   const onChangeCheckbox = () => {
     onUpdate(id);
   };
@@ -47,3 +45,16 @@ export default function TodoItem({
     </>
   );
 }
+
+// 고차 컴포넌트(HOC)
+export default memo(TodoItem, (prevProps, nextProps) => {
+  //반환값에 따라, Props가 바뀌었는지 안바뀌었는지 판단
+  //True => Props 바뀌지 않음 => 리렌더링 X
+  //False => Props 바뀜 => 리렌더링 O
+  if (prevProps.id !== nextProps.id) return false;
+  if (prevProps.isDone !== nextProps.isDone) return false;
+  if (prevProps.content !== nextProps.content) return false;
+  if (prevProps.date !== nextProps.date) return false;
+
+  return true;
+});
