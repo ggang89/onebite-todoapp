@@ -1,4 +1,4 @@
-import { useState, useRef, useReducer } from "react";
+import { useState, useRef, useReducer, useCallback } from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
@@ -53,7 +53,7 @@ function App() {
   const [todos, dispatch] = useReducer(reducer, mockDate);
   const idRef = useRef(2);
 
-  const onCreate = (content) => {
+  const onCreate = useCallback((content) => {
     dispatch({
       type: "CREATE",
       data: {
@@ -63,35 +63,38 @@ function App() {
         date: new Date().getTime(),
       },
     });
-  };
+  }, []);
 
-  const onUpdate = (targetId) => {
+  const onUpdate = useCallback((targetId) => {
     dispatch({
       type: "UPDATE",
       targetId: targetId,
     });
-  };
+  }, []);
 
-  const onDelete = (targetId) => {
-    dispatch({
-      type: "DELETE",
-      targetId: targetId,
-    });
-  };
+  const onDelete = useCallback(() => {
+    (targetId) => {
+      dispatch({
+        type: "DELETE",
+        targetId: targetId,
+      });
+    };
+  }, []);
 
-  const onEdit = (targetId) => {
+  const onEdit = useCallback((targetId) => {
     dispatch({
       type: "EDIT",
       targetId: targetId,
     });
-  };
-  const handleEditText = (e, targetId) => {
+  },[]);
+
+  const handleEditText = useCallback((e, targetId) => {
     dispatch({
       type: "handleEditText",
       targetId: targetId,
-      event:e,
+      event: e,
     });
-  };
+  },[]);
 
   return (
     <div className="App">
