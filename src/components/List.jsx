@@ -1,9 +1,9 @@
-import { TodoContext } from "../App";
+import { TodoStateContext } from "../App";
 import TodoItem from "./TodoItem";
 import { useState, useMemo, useContext } from "react";
 
 export default function List() {
-  const { todos } = useContext(TodoContext);
+  const todos = useContext(TodoStateContext);
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {

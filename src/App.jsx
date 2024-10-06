@@ -4,6 +4,7 @@ import {
   useReducer,
   useCallback,
   createContext,
+  useMemo,
 } from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
@@ -55,7 +56,8 @@ function reducer(state, action) {
   }
 }
 
-export const TodoContext = createContext();
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext();
 
 function App() {
   const [todos, dispatch] = useReducer(reducer, mockDate);
@@ -81,10 +83,10 @@ function App() {
   }, []);
 
   const onDelete = useCallback((targetId) => {
-      dispatch({
-        type: "DELETE",
-        targetId: targetId,
-      });
+    dispatch({
+      type: "DELETE",
+      targetId: targetId,
+    });
   }, []);
 
   const onEdit = useCallback((targetId) => {
@@ -102,24 +104,22 @@ function App() {
     });
   }, []);
 
+  //DispatchContext의 함수도 App이 리렌덜이 될 때마다 또 생성된다.
+  //이를 방지하기 위해 useMemo 사용
+  const memoizedDispatch = useMemo(() => {
+    return { onCreate, onDelete, onEdit, onUpdate, handleEditText };
+  }, []);
+
   return (
     <div className="App">
       {/* <Exam/> */}
       <Header />
-      <TodoContext.Provider
-        value={{
-          todos,
-          onCreate,
-          onUpdate,
-          onDelete,
-          onEdit,
-          handleEditText,
-        }}
-      >
-        <Editor />
-        <List
-        />
-      </TodoContext.Provider>
+      <TodoStateContext.Provider value={todos}>
+        <TodoDispatchContext.Provider value={memoizedDispatch}>
+          <Editor />
+          <List />
+        </TodoDispatchContext.Provider>
+      </TodoStateContext.Provider>
     </div>
   );
 }

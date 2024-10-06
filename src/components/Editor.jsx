@@ -1,8 +1,8 @@
 import { useState, useRef, useContext } from "react";
-import { TodoContext } from "../App";
+import { TodoDispatchContext } from "../App";
 
 export default function Editor() {
-  const {onCreate} = useContext(TodoContext);
+  const { onCreate } = useContext(TodoDispatchContext);
   // => useContext함수가 TodoContext로부터 받은 데이터를 반환해준다.
   // => 이 데이터가 반환한 값을 data 변수에 넣음
   // console.log(data) => value로 전달한 값 => 구조분해할당으로 사용 가능!
