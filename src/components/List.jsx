@@ -1,13 +1,9 @@
+import { TodoContext } from "../App";
 import TodoItem from "./TodoItem";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 
-export default function List({
-  todos,
-  onUpdate,
-  onDelete,
-  onEdit,
-  handleEditText,
-}) {
+export default function List() {
+  const { todos } = useContext(TodoContext);
   const [search, setSearch] = useState("");
 
   const handleSearch = (e) => {
@@ -49,16 +45,7 @@ export default function List({
       />
       <div className="TodosWrapper">
         {filteredTodos.map((todo) => {
-          return (
-            <TodoItem
-              key={todo.id}
-              {...todo}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-              onEdit={onEdit}
-              handleEditText={handleEditText}
-            />
-          );
+          return <TodoItem key={todo.id} {...todo} />;
         })}
       </div>
     </div>

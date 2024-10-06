@@ -1,4 +1,10 @@
-import { useState, useRef, useReducer, useCallback } from "react";
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  createContext,
+} from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
@@ -49,6 +55,8 @@ function reducer(state, action) {
   }
 }
 
+export const TodoContext = createContext();
+
 function App() {
   const [todos, dispatch] = useReducer(reducer, mockDate);
   const idRef = useRef(2);
@@ -72,13 +80,11 @@ function App() {
     });
   }, []);
 
-  const onDelete = useCallback(() => {
-    (targetId) => {
+  const onDelete = useCallback((targetId) => {
       dispatch({
         type: "DELETE",
         targetId: targetId,
       });
-    };
   }, []);
 
   const onEdit = useCallback((targetId) => {
@@ -86,7 +92,7 @@ function App() {
       type: "EDIT",
       targetId: targetId,
     });
-  },[]);
+  }, []);
 
   const handleEditText = useCallback((e, targetId) => {
     dispatch({
@@ -94,20 +100,26 @@ function App() {
       targetId: targetId,
       event: e,
     });
-  },[]);
+  }, []);
 
   return (
     <div className="App">
       {/* <Exam/> */}
       <Header />
-      <Editor onCreate={onCreate} />
-      <List
-        todos={todos}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-        onEdit={onEdit}
-        handleEditText={handleEditText}
-      />
+      <TodoContext.Provider
+        value={{
+          todos,
+          onCreate,
+          onUpdate,
+          onDelete,
+          onEdit,
+          handleEditText,
+        }}
+      >
+        <Editor />
+        <List
+        />
+      </TodoContext.Provider>
     </div>
   );
 }
