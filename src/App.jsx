@@ -100,7 +100,7 @@ function App() {
     dispatch({
       type: "handleEditText",
       targetId: targetId,
-      event: e,
+      content:e.target.value,
     });
   }, []);
 
